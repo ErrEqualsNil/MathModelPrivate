@@ -1,27 +1,29 @@
 import Astar
 import Map
 import random
-direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+import copy
+direction = [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]
+
 
 def moveChoose(m, tmp, x, y, person, number, maxx, maxy):
-    ret = [0, 0, 0, 0]
+    ret = [0, 0, 0, 0, 0]
     if number == 0:
         return ret
     v = 1  # adult
     if person == 0:
-        v = 1.5 # old
+        v = 1.5  # old
     elif person == 1:
-        v = 1.3 # young
+        v = 1.3  # young
     elif person == 3:
-        v = 2 # disabled
-    moveProb = [0, 0, 0, 0]
+        v = 2  # disabled
+    moveProb = [0, 0, 0, 0, 0]
     maxProb_ID = 0
-    for i in range(4):
+    for i in range(5):
         newx = x + direction[i][0]
         newy = y + direction[i][1]
         if newx < 0 or newx >= maxx or newy < 0 or newy >= maxy or m[newx][newy].cap == 0:
             continue
-        remain_vol = m[newx][newy].remain_vol()
+        remain_vol = tmp[newx][newy].remain_vol()
         if remain_vol <= 0:
             continue
         right = (m[x][y].msg - m[newx][newy].msg) * v + remain_vol
@@ -33,12 +35,12 @@ def moveChoose(m, tmp, x, y, person, number, maxx, maxy):
     Probsum = 0
     for e in moveProb:
         Probsum += e
-    for i in range(4):
+    for i in range(5):
         try:
             ret[i] = int((number * moveProb[i]) / Probsum)
         except:
             ret[i] = 0
-    for i in range(4):
+    for i in range(5):
         number -= ret[i]
     if number > 0:
         ret[maxProb_ID] += number
@@ -49,28 +51,20 @@ def process(iter_time):
     cot = 0
     x, y, m = Astar.processMsg()
     while cot <= iter_time:
-        for person in range(4):
-            if person == 0:
-                print("old after {} iteration".format(cot))
-            elif person == 1:
-                print("young after {} iteration".format(cot))
-            elif person == 2:
-                print("Adult after {} iteration".format(cot))
-            elif person == 3:
-                print("disabled after {} iteration".format(cot))
-            for i in range(x):
-                for j in range(y):
-                    print(m[i][j].person[person], end=" ")
-                print()
+        print("Total Number of People after {} iterations".format(cot))
+        for i in range(x):
+            for j in range(y):
+                print(m[i][j].totalPerson(), end=" ")
             print()
-        tmp = m
+        print()
+        tmp = copy.deepcopy(m)
         for i in range(x):
             for j in range(y):
                 if m[i][j].cap == 0 or m[i][j].exit:
                     continue
                 for person in range(4):
                     change = moveChoose(m, tmp, i, j, person, m[i][j].person[person], x, y)
-                    for k in range(4):
+                    for k in range(5):
                         newx = i + direction[k][0]
                         newy = j + direction[k][1]
                         if newx < 0 or newx >= x or newy < 0 or newy >= y or m[newx][newy].cap == 0:
@@ -78,7 +72,7 @@ def process(iter_time):
                         change[k] = min(tmp[newx][newy].remain_vol(), change[k])
                         tmp[newx][newy].person[person] += change[k]
                         tmp[i][j].person[person] -= change[k]
-        m = tmp
+        m = copy.deepcopy(tmp)
         cot += 1
 
-process(50)
+process(30)

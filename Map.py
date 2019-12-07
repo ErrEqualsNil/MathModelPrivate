@@ -17,6 +17,11 @@ class node:
         for e in self.person:
             ret -= e
         return ret
+    def totalPerson(self):
+        ret = 0
+        for e in self.person:
+            ret += e
+        return ret
 
 
 def createMap():
@@ -26,8 +31,8 @@ def createMap():
     m = np.empty((sizex, sizey), node)
     for i in range(sizex):
         for j in range(sizey):
-            m[i][j] = node(20, False, 0, random.randint(0, 2), random.randint(0, 2), random.randint(0, 4)+1,
-                             random.randint(0, 20) // 20)
+            m[i][j] = node(7, False, 0, random.randint(0, 1), random.randint(0, 1), random.randint(0, 4),
+                           random.randint(0,22) // 20)
 
     """
     接下来进行细节修饰
