@@ -31,8 +31,8 @@ def createMap():
     m = np.empty((sizex, sizey), node)
     for i in range(sizex):
         for j in range(sizey):
-            m[i][j] = node(7, False, 0, random.randint(0, 1), random.randint(0, 1), random.randint(0, 4),
-                           random.randint(0,22) // 20)
+            m[i][j] = node(5, False, 0, random.randint(0, 1), random.randint(0, 1), random.randint(0, 2),
+                           random.randint(0, 22) // 20)
 
     """
     接下来进行细节修饰
@@ -51,12 +51,12 @@ def createMap():
         for j in range(2):
             m[2+i][7+j].cap = 0
             m[2+i][7+j].person = [0, 0, 0, 0]
-    m[0][4].exit = True
-    m[0][4].cap = 0x3f3f
+    m[4][0].exit = True
+    #  m[4][0].cap = 0x3f3f
     m[5][9].exit = True
-    m[5][9].cap = 0x3f3f
+    #  m[5][9].cap = 0x3f3f
     m[5][10].exit = True
-    m[5][10].cap = 0x3f3f
+    #  m[5][10].cap = 0x3f3f
     return sizex, sizey, m
 
 
