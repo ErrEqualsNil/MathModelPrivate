@@ -11,11 +11,11 @@ def moveChoose(m, tmp, x, y, person, number, maxx, maxy):
         return ret
     v = 1  # adult
     if person == 0:
-        v = 1.5  # old
+        v = 2  # old
     elif person == 1:
-        v = 1.3  # young
+        v = 1.5  # young
     elif person == 3:
-        v = 2  # disabled
+        v = 3  # disabled
     moveProb = [0, 0, 0, 0, 0]
     maxProb_ID = 0
     for i in range(5):
@@ -75,4 +75,10 @@ def process(iter_time):
         m = copy.deepcopy(tmp)
         cot += 1
 
-process(30)
+itertimes = input("Please input time of iterations:")
+try:
+    itertimes = int(itertimes)
+    process(itertimes)
+except:
+    print("Invalid Input! Please try again\n")
+
