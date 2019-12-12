@@ -8,10 +8,12 @@ class weight:
     def __init__(self, w, index):
         self.weight = w
         self.index = index
+
     def __cmp__(self, other):
         if self.weight == other.weight:
             return self.index < other.index
         return self.weight > other.weight
+
     def __lt__(self, other):
         if self.weight == other.weight:
             return self.index < other.index
@@ -60,6 +62,7 @@ def movechoose(m, tmp, x, y, maxx, maxy):
             personNeedMove -= change
             if m[x][y].person[ID] == 0:
                 break
+
 
 def process(iter_time):
     flows = 3
@@ -110,17 +113,16 @@ def process(iter_time):
                 vis[newnode.x][newnode.y] = 1
                 q.put(newnode)
         m = copy.deepcopy(tmp)
+        count = 0
         print("Total Number of People after {} iterations".format(cot))
         for i in range(x):
             for j in range(y):
                 print(m[i][j].totalPerson(), end=" ")
+                count += m[i][j].totalPerson()
             print()
         print()
+        if count == 0:
+            print("Finish Process At Iteration {}".format(cot))
+            return
         cot += 1
-
-
-itertimes = input("Please input time of iterations:")
-itertimes = int(itertimes)
-process(itertimes)
-
 
