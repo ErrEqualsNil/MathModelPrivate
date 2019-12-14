@@ -56,7 +56,7 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
                             tmpw = max(tmpw, m[tmpx][tmpy].msg)
                     tmpw /= float(flows)
                     w = max(w, tmpw)
-                w = - w * alpha + (m[x][y].msg - m[newx][newy].msg) + m[newx][newy].remain_vol()
+                w = - w * alpha + (m[x][y].msg - m[newx][newy].msg) * 2
             # print(newx, newy, x, y, ID, w)
             weightlist.put(weight(w, i))
         personNeedMove = m[x][y].person[ID]
@@ -72,20 +72,21 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
                 break
 
 
-def process(iter_time):
+def process():
     flows = 3
     cot = 1
     x, y, m = Astar.processMsg()
     exitpos = []
-    print("Initial Number of People".format(cot))
+    # print("Initial Number of People".format(cot))
     for i in range(x):
         for j in range(y):
-            print(m[i][j].totalPerson(), end=" ")
+            # print(m[i][j].totalPerson(), end=" ")
             if m[i][j].exit:
                 exitpos.append(Astar.pos(i, j))
-        print()
-    print()
-    while cot <= iter_time:
+        # print()
+    # print()
+
+    while True:
         tmp = copy.deepcopy(m)
         vis = [[0] * y for i in range(x)]
         q = queue.Queue()
@@ -109,9 +110,11 @@ def process(iter_time):
                         tmp[i][j].person[k] -= needflow
                         needflow = 0
                         break
-                if flows - needflow != 0:
+                    '''
+                    if flows - needflow != 0:
                     print("{} leave at x = {};y = {}; remain {}".format(flows - needflow,
                                                                         i, j, tmp[i][j].totalPerson()))
+                    '''
             else:
                 movechoose(m, tmp, i, j, x, y, exitpos, flows)
             for flag in range(4):
@@ -123,15 +126,15 @@ def process(iter_time):
                 q.put(newnode)
         m = copy.deepcopy(tmp)
         count = 0
-        print("Total Number of People after {} iterations".format(cot))
+        # print("Total Number of People after {} iterations".format(cot))
         for i in range(x):
             for j in range(y):
-                print(m[i][j].totalPerson(), end=" ")
+                # print(m[i][j].totalPerson(), end=" ")
                 count += m[i][j].totalPerson()
-            print()
-        print()
+            # print()
+        # print()
         if count == 0:
             print("Finish Process At Iteration {}".format(cot))
-            return
+            return cot
         cot += 1
 
