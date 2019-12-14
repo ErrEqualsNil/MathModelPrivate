@@ -59,3 +59,5 @@ def createMap1():
     #  m[5][10].cap = 0x3f3f
     return sizex, sizey, m
 
+
+

@@ -1,7 +1,7 @@
 import Astar
 import copy
 import queue
-direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
+direction = [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]
 
 
 class weight:
@@ -35,7 +35,7 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
             alpha = 1  # disabled
 
         weightlist = queue.PriorityQueue()
-        for i in range(4):
+        for i in range(5):
             newx = x + direction[i][0]
             newy = y + direction[i][1]
             if newx < 0 or newx >= maxx or newy < 0 or newy >= maxy or m[newx][newy].cap == 0:
@@ -56,8 +56,7 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
                             tmpw = max(tmpw, m[tmpx][tmpy].msg)
                     tmpw /= float(flows)
                     w = max(w, tmpw)
-                w = - w * alpha + (m[x][y].msg - m[newx][newy].msg) * 2
-            # print(newx, newy, x, y, ID, w)
+                w = - w * alpha + (m[x][y].msg - m[newx][newy].msg)
             weightlist.put(weight(w, i))
         personNeedMove = m[x][y].person[ID]
         while not weightlist.empty():
