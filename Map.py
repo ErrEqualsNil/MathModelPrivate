@@ -24,7 +24,7 @@ class node:
         return ret
 
 
-def createMap():
+def createMap1():
     # 下面为地图大体轮廓生成
     sizex = 6
     sizey = 11
@@ -58,5 +58,4 @@ def createMap():
     m[5][10].exit = True
     #  m[5][10].cap = 0x3f3f
     return sizex, sizey, m
-
 

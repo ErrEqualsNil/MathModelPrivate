@@ -1,4 +1,4 @@
-from Map import createMap
+from Map import createMap1
 import queue
 
 class pos:
@@ -7,7 +7,7 @@ class pos:
         self.y = y
 
 def processMsg():
-    x, y, m = createMap()
+    x, y, m = createMap1()
     direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
     q = queue.Queue()
     vis = [[0]*y for i in range(x)]
