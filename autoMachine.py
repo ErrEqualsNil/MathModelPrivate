@@ -1,7 +1,6 @@
 import Astar
 import copy
 import queue
-import math
 direction = [[1, 0], [-1, 0], [0, 1], [0, -1]]
 
 
@@ -73,7 +72,8 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
                 break
 
 
-def process(flows=1):
+def process():
+    flows = 3
     cot = 1
     x, y, m = Astar.processMsg()
     exitpos = []
@@ -85,6 +85,7 @@ def process(flows=1):
                 exitpos.append(Astar.pos(i, j))
         # print()
     # print()
+
     while True:
         tmp = copy.deepcopy(m)
         vis = [[0] * y for i in range(x)]
@@ -100,9 +101,7 @@ def process(flows=1):
             if m[i][j].cap == 0:
                 continue
             if m[i][j].exit:
-                if m[i][j].remain_vol() == 0:
-                    continue
-                needflow = flows * math.log2(m[i][j].remain_vol())
+                needflow = flows
                 for k in range(4):
                     if m[i][j].person[k] <= needflow:
                         needflow -= m[i][j].person[k]
@@ -135,7 +134,7 @@ def process(flows=1):
             # print()
         # print()
         if count == 0:
-            # print("Finish Process At Iteration {}".format(cot))
+            print("Finish Process At Iteration {}".format(cot))
             return cot
         cot += 1
 
