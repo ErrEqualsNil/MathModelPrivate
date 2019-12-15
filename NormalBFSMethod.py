@@ -1,6 +1,7 @@
+from Map import createMap1
+import queue
 import Astar
 import copy
-import queue
 direction = [[1, 0], [-1, 0], [0, 1], [0, -1], [0, 0]]
 
 
@@ -24,15 +25,6 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
     for ID in range(4):
         if m[x][y].person[ID] == 0:
             continue
-        alpha = 0
-        if ID == 0:
-            alpha = 0.7  # old
-        elif ID == 1:
-            alpha = 0.5  # young
-        elif ID == 2:
-            alpha = 0.3  # adult
-        elif ID == 3:
-            alpha = 1  # disabled
 
         weightlist = queue.PriorityQueue()
         for i in range(5):
@@ -40,23 +32,8 @@ def movechoose(m, tmp, x, y, maxx, maxy, exitlist, flows):
             newy = y + direction[i][1]
             if newx < 0 or newx >= maxx or newy < 0 or newy >= maxy or m[newx][newy].cap == 0:
                 continue
-            if m[newx][newy].exit:
-                w = 0x3f3f
             else:
-                w = 0
-                tmpw = w
-                for exit in exitlist:
-                    symmetry_x = 2 * exit.x - newx
-                    symmetry_y = 2 * exit.y - newy
-                    for tmpx in range(min(symmetry_x, newx + 1), max(symmetry_x, newx + 1)):
-                        for tmpy in range(min(symmetry_y, newx + 1), max(symmetry_y, newx + 1)):
-                            if tmpx < 0 or tmpx >= maxx or tmpy < 0 or tmpy >= maxy:
-                                continue
-                            tmpw += m[tmpx][tmpy].totalPerson()
-                            tmpw = max(tmpw, m[tmpx][tmpy].msg)
-                    tmpw /= float(flows)
-                    w = max(w, tmpw)
-                w = - w * alpha + (m[x][y].msg - m[newx][newy].msg)
+                w = m[x][y].msg - m[newx][newy].msg
             weightlist.put(weight(w, i))
         personNeedMove = m[x][y].person[ID]
         while not weightlist.empty():
@@ -132,7 +109,6 @@ def process(x, y, m):
             # print()
         # print()
         if count == 0:
-            print("Finish Process At Iteration {}".format(cot))
+            print("Normal BFS Finish Process At Iteration {}".format(cot))
             return cot
         cot += 1
-

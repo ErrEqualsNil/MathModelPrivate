@@ -31,8 +31,8 @@ def createMap1():
     m = np.empty((sizex, sizey), node)
     for i in range(sizex):
         for j in range(sizey):
-            m[i][j] = node(5, False, 0, random.randint(0, 1), random.randint(0, 1), random.randint(0, 2),
-                           random.randint(0, 22) // 20)
+            m[i][j] = node(15, False, 0, random.randint(0, 4), random.randint(0, 4), random.randint(0, 7),
+                           0)
 
     """
     接下来进行细节修饰
